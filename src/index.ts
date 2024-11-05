@@ -39,7 +39,7 @@ app.post('/trim', upload.single('audio'), (req, res) => {
         .setDuration(end - start)
         .output(outputPath)
         .on('end', () => res.download(outputPath, () => fs.unlinkSync(outputPath)))
-        .on('error', (err) => res.status(500).send('Audio processing error: ' + err.message))
+        .on('error', (err: any) => res.status(500).send('Audio processing error: ' + err.message))
         .run();
 });
 
@@ -53,7 +53,7 @@ app.post('/adjust-volume', upload.single('audio'), (req, res) => {
         .audioFilters(`volume=${volume}`)
         .output(outputPath)
         .on('end', () => res.download(outputPath, () => fs.unlinkSync(outputPath)))
-        .on('error', (err) => res.status(500).send('Audio processing error: ' + err.message))
+        .on('error', (err: any) => res.status(500).send('Audio processing error: ' + err.message))
         .run();
 });
 
@@ -73,7 +73,6 @@ app.post('/generate-music-audio', async (req, res) => {
         console.log(tagData)
     }
 
-    const ffmpegProcess = new PassThrough();
     await new Promise((resolve, reject) => {
         ffmpeg(fileInput)
             .input(tagData)
@@ -85,9 +84,6 @@ app.post('/generate-music-audio', async (req, res) => {
             .on('error', reject)
             .run();
     })
-
-    console.log(ffmpegProcess)
-    // const chunks: any[] = [];
 
     try {
         const audioBuffer = fs.readFileSync(tempFilePath);

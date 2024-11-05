@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm install && tsc -b",
+    "build": "tsc",
     "start": "node dist/index.js"
   },
   "keywords": [],
@@ -25,6 +25,7 @@
     "@types/axios": "^0.14.4",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
+    "@types/fluent-ffmpeg": "^2.1.27",
     "@types/multer": "^1.4.12",
     "typescript": "^5.6.3"
   }

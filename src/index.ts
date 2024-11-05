@@ -8,6 +8,9 @@ import { tagFileMap } from './constants.js';
 import axios from 'axios';
 import { promisify } from 'util';
 import { PassThrough } from 'stream';
+import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg';
+
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 const app = express();
 app.use(express.json());

@@ -81,7 +81,6 @@ app.post('/generate-music-audio', async (req, res) => {
             .input(tagData)
             .outputOptions([
                 '-threads 2',                // Use 2 vCPUs
-                '-memory_limit 384000',      // Limit memory to 384MB
                 '-max_muxing_queue_size 512' // Reduce muxing queue size
             ])        
             .complexFilter('amix=inputs=2:duration=first')

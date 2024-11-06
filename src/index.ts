@@ -83,9 +83,13 @@ app.post('/generate-music-audio', async (req, res) => {
             .outputOptions([
                 '-threads 2'
             ])
-            .complexFilter('amix=inputs=2:duration=first')
-            .duration(30)
+            .complexFilter([
+                '[0:a]aloop=loop=-1:size=2147483647[a0]',  // Repeat fileInput indefinitely
+                '[1:a]aloop=loop=-1:size=2147483647[a1]',  // Repeat tagData indefinitely
+                '[a0][a1]amix=inputs=2:duration=longest'   // Mix the two inputs to match the longest one
+            ])
             .format('mp3')
+            .outputOptions(['-t 30'])
             .output(tempFilePath)
             .on('end', resolve)
             .on('error', reject)

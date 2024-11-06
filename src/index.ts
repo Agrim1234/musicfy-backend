@@ -10,7 +10,7 @@ import { promisify } from 'util';
 import { PassThrough } from 'stream';
 import { path as ffmpegPath } from '@ffmpeg-installer/ffmpeg';
 
-//ffmpeg.setFfmpegPath(ffmpegPath);
+ffmpeg.setFfmpegPath(ffmpegPath);
 
 const app = express();
 app.use(express.json());
@@ -78,7 +78,11 @@ app.post('/generate-music-audio', async (req, res) => {
 
     await new Promise((resolve, reject) => {
         ffmpeg(fileInput)
+            .inputOptions(['-thread_queue_size 1024']) // Apply to input
             .input(tagData)
+            .outputOptions([
+                '-threads 2'
+            ])
             .complexFilter('amix=inputs=2:duration=first')
             .duration(30)
             .format('mp3')

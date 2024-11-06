@@ -15,7 +15,7 @@ ffmpeg.setFfmpegPath(ffmpegPath);
 const app = express();
 app.use(express.json());
 app.use(cors({
-    origin: ["https://musicfy-ai.vercel.app/", "http://127.0.0.1:3001"],
+    origin: ["https://musicfy-ai.vercel.app/", "http://127.0.0.1:3000"],
     credentials: true
 }));
 
@@ -84,9 +84,12 @@ app.post('/generate-music-audio', async (req, res) => {
                 '-threads 2'
             ])
             .complexFilter([
-                'amix=inputs=2:duration=first'   // Mix the two inputs to match the longest one
+                '[0:a]aloop=loop=-1:size=2147483647[a0]',  // Repeat fileInput indefinitely
+                '[1:a]aloop=loop=-1:size=2147483647[a1]',  // Repeat tagData indefinitely
+                '[a0][a1]amix=inputs=2:duration=longest'   
             ])
             .format('mp3')
+            .outputOptions(['-t 30'])
             .output(tempFilePath)
             .on('end', resolve)
             .on('error', reject)
